@@ -3,10 +3,9 @@ from humanize import naturalsize
 import datetime
 from flask import current_app
 
+
 def get_file_data(directory):
     data = []
-    #    directory = r"C:\Users\Support\Desktop\\"
-
     for a in os.listdir(directory):
         modification_date = os.path.getmtime(directory + a)
         file_size = naturalsize(os.stat(directory + a).st_size)
