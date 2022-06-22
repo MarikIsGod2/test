@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, flash
 import random
 import string
 import subprocess
@@ -11,9 +11,9 @@ def create_app():
 
     app = Flask(__name__)
     app.config['SECRET_KEY'] = password
-    app.config['DOWNLOAD_DIRECTORY'] = os.getenv("FLASK_DOWNLOAD_DIRECTORY" + '/')
+    app.config['DOWNLOAD_DIRECTORY'] = os.environ.get('FLASK_DOWNLOAD_DIRECTORY') + '/'
     if app.config['DOWNLOAD_DIRECTORY'] == "" or app.config['DOWNLOAD_DIRECTORY'] is None:
-        app.config['DOWNLOAD_DIRECTORY'] = '/mnt/c/Users/Support/Desktop/web_file_explorer_python/download_folder/'
+        app.config['DOWNLOAD_DIRECTORY'] = '/'
     app.config['LEN_DOWNLOAD_DIRECTORY'] = app.config['DOWNLOAD_DIRECTORY'].count('/')
     print("Current download directory is ", app.config['DOWNLOAD_DIRECTORY'])
 # 7 + 1
