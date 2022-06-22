@@ -87,7 +87,7 @@ def logged_in():
     return render_template("logged_in.html", data=data, directory=directory, directory_anzeige=directory_anzeige)
 
 
-
+# Files löschen mit bestätigung
 
 # file freigeben
 
