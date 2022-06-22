@@ -1,4 +1,3 @@
-import os
 from flask import Blueprint, render_template, request, flash, redirect, current_app
 from werkzeug.utils import secure_filename
 from .list_dir import get_file_data
@@ -79,6 +78,7 @@ def logged_in():
                 return redirect(request.url)
             if file:
                 filename = secure_filename(file.filename)
+                print(directory + filename, "[DEBUG] AUSGABE PATH FILE")
                 file.save(directory + filename)
                 flash("Upload sucessfull", category="sucess")
 
