@@ -44,6 +44,7 @@ def home():
 @views.route('/logged_in', methods=['POST', 'GET'])
 def logged_in():
     # Überprüfung ob es der erste Aufruf ist (Ob ein POST übergeben wurde)
+  #  flash(path)
     if request.method == 'POST':
         if request.form.get('back'):
             directory = request.form.get('back')
@@ -108,7 +109,7 @@ def confirm_delete():
                 rmtree(directory)
                 flash("Ordner wurde erfolgreich gelöscht. " + directory, category="sucess")
 
-            return redirect(url_for("views.logged_in"))
+            return redirect(url_for('views.logged_in'))
         else:
             flash("Der löschvorgang wurde abgebrochen.", category="error")
             return redirect(url_for('views.logged_in'))
