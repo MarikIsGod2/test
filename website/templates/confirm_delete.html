@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block title %} Confirm Deleting File / Directory {% endblock %}
+{% block content %}
+
+<form action="" method="POST">
+    <h3> Are you sure you would like to remove <br>{{ directory_anzeige }}</h3>
+    <button type="submit" class="btn btn-primary" name="delete_confirmed" value="confirmed"> Yes </button>
+    <button type="submit" class="btn btn-primary" name="delete_confirmed" value=""> No  </button>
+
+    <input type="hidden" value="{{directory}}{{file_name}}" name="directory">
+</form>
+
+{% endblock %}

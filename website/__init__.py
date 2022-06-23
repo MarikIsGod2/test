@@ -10,7 +10,7 @@ def create_app():
 
     app = Flask(__name__)
     app.config['SECRET_KEY'] = password
-    app.config['DOWNLOAD_DIRECTORY'] = os.environ.get('FLASK_DOWNLOAD_DIRECTORY') + '/'
+    app.config['DOWNLOAD_DIRECTORY'] = os.environ.get('FLASK_DOWNLOAD_DIRECTORY')
     if app.config['DOWNLOAD_DIRECTORY'] == "" or app.config['DOWNLOAD_DIRECTORY'] is None:
         app.config['DOWNLOAD_DIRECTORY'] = '/'
     app.config['LEN_DOWNLOAD_DIRECTORY'] = app.config['DOWNLOAD_DIRECTORY'].count('/')

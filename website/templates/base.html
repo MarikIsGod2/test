@@ -66,40 +66,11 @@
         {% endif %}
     {% endwith %}
     <div class="container">
-        <h1 align="center">File Editor</h1>
         <div align="center" class=form-group">
                 {% block content %} test {% endblock %}
 
 
-        <form action="" method="POST">
-           <button type="submit" class="btn btn-primary" name="back" value="{{ directory }}"> Go back one Directory </button> Directory = {{ directory_anzeige }}
-            <input type="hidden" value="{{ directory }}" name="directory">
-            <table id="datatable" class="display">
-                <thead>
-                    <tr>
-                        <th>File Type</th>
-                        <th>File Name </th>
-                        <th>Last edited</th>
-                        <th>File Size</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in data %}
-                        <tr>
-                                {% if row["type"] == "dir" %}
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> Directory </button></td>
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> {{ row["name"] }} </button></td>
-                                {% else %}
-                            <td><a href="/download{{directory_anzeige}}{{row['name']}}"> File </a></td>
-                            <td><a href="/download{{directory_anzeige}}{{row['name']}}">{{ row["name"] }} </a></td>
-                                {% endif %}
-                            <td> {{ row["modification_date"]}}</td>
-                            <td> {{ row["file_size"] }}</td>
-                        </tr>
-                   {% endfor %}
-                </tbody>
-            </table>
-        </form>
+
 
 
     </div>
