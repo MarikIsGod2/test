@@ -7,6 +7,7 @@
 
 {% block title %} File editor {% endblock %}
 {% block content %}
+<br>
     <form method=POST enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
@@ -15,7 +16,7 @@
     </form>
 
         <form action="" method="POST">
-           <button type="submit" class="btn btn-primary" name="back" value="{{ directory }}"> Go back one Directory </button> Directory = {{ directory_anzeige }}
+            <a href="/home/{{old_directory}}"> Go back one Directory  </a> Directory = {{ directory_anzeige }}
             <input type="hidden" value="{{ directory }}" name="directory">
             <input type="hidden" value="{{ directory_anzeige }}" name="directory_anzeige">
             <table id="datatable" class="display">
@@ -32,8 +33,8 @@
                     {% for row in data %}
                         <tr>
                                 {% if row["type"] == "dir" %}
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> Directory </button></td>
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> {{ row["name"] }} </button></td>
+                            <td><a href="/home/{{directory_anzeige}}/{{row['name']}}/"> Directory  </a></td>
+                            <td><a href="/home/{{directory_anzeige}}/{{row['name']}}/"> {{ row['name'] }}  </a></td>
                             <td> {{ row["modification_date"]}}</td>
                             <td> {{ row["file_size"] }}</td>
                             <td><button type="submit" formaction="/confirm_delete" class="btn btn-link" name="del_dir" value="{{ row['name'] }}"> Delete Directory </button></td>

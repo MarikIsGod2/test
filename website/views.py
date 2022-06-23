@@ -7,69 +7,50 @@ from shutil import rmtree
 views = Blueprint('views', __name__)
 
 
-@views.route('/', methods=['POST', 'GET'])
-def home():
-    # Überprüfung ob es der erste Aufruf ist (Ob ein POST übergeben wurde)
+@views.route('/')
+def test():
+    return redirect(url_for('views.home', anzeige_directory="####"))
 
-    if request.method == 'POST':
 
-        if request.form.get('back'):
-            directory = request.form.get('back')
-
-            tmp_directory = directory.split("/")
-            i = 0
-            directory = ""
-            while i < len(tmp_directory) - 3:
-                i = i + 1
-                directory = directory + "/" + tmp_directory[i]
-            directory = directory + "/"
-            if directory.startswith(current_app.config['DOWNLOAD_DIRECTORY']):
-                pass
-            else:
-                flash("Sie sind am ersten Directory angekommen.", category="error")
-                directory = current_app.config['DOWNLOAD_DIRECTORY']
-        else:
-            print(request.form.get('dir'), "dir", request.form.get('directory'), "directory")
-
-            if request.form.get('dir'):
-                directory = (request.form.get('directory') + request.form.get('dir') + "/")
-            else:
-                directory = (request.form.get('directory'))
+@views.route('/home/<path:anzeige_directory>', methods=['POST', 'GET'])
+def home(anzeige_directory):
+    if anzeige_directory != '####':
+        directory = current_app.config['DOWNLOAD_DIRECTORY'] + anzeige_directory
     else:
         directory = current_app.config['DOWNLOAD_DIRECTORY']
+        if not os.path.exists(directory):
+            flash("Unknown path. Changing to default download path.", category="error")
+            directory = current_app.config['DOWNLOAD_DIRECTORY']
 
+    if request.method == 'POST':
+        if request.form.get('back'):
+            directory = current_app.config['DOWNLOAD_DIRECTORY'] + anzeige_directory
     data, directory_anzeige = get_file_data(directory)
-    return render_template("home.html", data=data, directory=directory, directory_anzeige=directory_anzeige)
+    tmp_directory = directory_anzeige.split("/")
+    i = 0
+    old_directory = ""
+    while i < len(tmp_directory) - 3:
+        i = i + 1
+        old_directory = old_directory + "/" + tmp_directory[i]
+    old_directory = old_directory + "/"
+    if old_directory == "/":
+        old_directory = "%23%23%23%23"
+    return render_template("home.html", data=data, directory=directory, directory_anzeige=directory_anzeige, old_directory=old_directory)
 
-@views.route('/logged_in', methods=['POST', 'GET'])
-def logged_in():
+@views.route('/logged_in/<path:anzeige_directory>', methods=['POST', 'GET'])
+def logged_in(anzeige_directory):
     # Überprüfung ob es der erste Aufruf ist (Ob ein POST übergeben wurde)
-  #  flash(path)
-    if request.method == 'POST':
-        if request.form.get('back'):
-            directory = request.form.get('back')
-
-            tmp_directory = directory.split("/")
-            i = 0
-            directory = ""
-            while i < len(tmp_directory) - 3:
-                i = i + 1
-                directory = directory + "/" + tmp_directory[i]
-            directory = directory + "/"
-            if directory.startswith(current_app.config['DOWNLOAD_DIRECTORY']):
-                pass
-            else:
-                flash("Sie sind am ersten Directory angekommen.", category="error")
-                directory = current_app.config['DOWNLOAD_DIRECTORY']
-        else:
-            print(request.form.get('dir'), "dir", request.form.get('directory'), "directory")
-
-            if request.form.get('dir'):
-                directory = (request.form.get('directory') + request.form.get('dir') + "/")
-            else:
-                directory = (request.form.get('directory'))
+    if anzeige_directory != '####':
+        directory = current_app.config['DOWNLOAD_DIRECTORY'] + anzeige_directory
     else:
         directory = current_app.config['DOWNLOAD_DIRECTORY']
+        if not os.path.exists(directory):
+            flash("Unknown path. Changing to default download path.", category="error")
+            directory = current_app.config['DOWNLOAD_DIRECTORY']
+
+    if request.method == 'POST':
+        if request.form.get('back'):
+            directory = current_app.config['DOWNLOAD_DIRECTORY'] + anzeige_directory
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -86,9 +67,15 @@ def logged_in():
                 file.save(directory + filename)
                 flash("Upload sucessfull", category="sucess")
     data, directory_anzeige = get_file_data(directory)
-    print(directory_anzeige)
-
-    return render_template("logged_in.html", data=data, directory=directory, directory_anzeige=directory_anzeige)
+    tmp_directory = directory_anzeige.split("/")
+    i = 0
+    old_directory = ""
+    while i < len(tmp_directory) - 3:
+        i = i + 1
+        old_directory = old_directory + "/" + tmp_directory[i]
+    if old_directory == "":
+        old_directory = "%23%23%23%23"
+    return render_template("logged_in.html", data=data, directory=directory, directory_anzeige=directory_anzeige, old_directory=old_directory)
 
 @views.route('/confirm_delete', methods=['POST', 'GET'])
 def confirm_delete():

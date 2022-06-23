@@ -7,9 +7,10 @@
 
 {% block title %} File editor {% endblock %}
 {% block content %}
-
+<br>
         <form action="" method="POST">
-           <button type="submit" class="btn btn-primary" name="back" value="{{ directory }}"> Go back one Directory </button> Directory = {{ directory_anzeige }}
+            <a href="/home/{{old_directory}}"> Go back one Directory  </a> Directory = {{ directory_anzeige }}
+           <br>
             <input type="hidden" value="{{ directory }}" name="directory">
             <table id="datatable" class="display">
                 <thead>
@@ -24,8 +25,8 @@
                     {% for row in data %}
                         <tr>
                                 {% if row["type"] == "dir" %}
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> Directory </button></td>
-                            <td><button type="submit" class="btn btn-link" name="dir" value="{{ row['name'] }}"> {{ row["name"] }} </button></td>
+                            <td><a href="/home/{{directory_anzeige}}{{row['name']}}/"> Directory  </a></td>
+                            <td><a href="/home/{{directory_anzeige}}{{row['name']}}/"> {{ row['name'] }}  </a></td>
                                 {% else %}
                             <td><a href="/download{{directory_anzeige}}{{row['name']}}"> File </a></td>
                             <td><a href="/download{{directory_anzeige}}{{row['name']}}">{{ row["name"] }} </a></td>

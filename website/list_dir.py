@@ -4,6 +4,18 @@ import datetime
 from flask import current_app
 
 
+def short_directory(directory):
+    tmp_directory = directory.split("/")
+    directory_anzeige = ""
+    i = 0
+    while i < len(tmp_directory) - 2:
+        i = i + 1
+        if i > current_app.config['LEN_DOWNLOAD_DIRECTORY'] - 1 :
+            directory_anzeige = directory_anzeige + "/" + tmp_directory[i]
+    directory_anzeige = directory_anzeige + "/"
+    return directory_anzeige
+
+
 def get_file_data(directory):
     data = []
     for a in os.listdir(directory):
