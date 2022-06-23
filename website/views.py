@@ -97,7 +97,7 @@ def confirm_delete():
             directory_anzeige = request.form.get('directory_anzeige') + request.form.get('del_file')
             file_name = request.form.get('del_file')
         elif request.form.get('del_dir'):
-            directory_anzeige = request.form.get('directory') + request.form.get('del_dir')
+            directory_anzeige = request.form.get('directory_anzeige') + request.form.get('del_dir')
             file_name = request.form.get('del_dir')
         elif request.form.get('delete_confirmed') == "confirmed":
             if os.path.isfile(directory) == True:
@@ -116,24 +116,4 @@ def confirm_delete():
         flash("Error: (Keine POST request erhalten.)", category="error")
         return redirect(url_for('views.logged_in'))
     return render_template("confirm_delete.html", directory_anzeige=directory_anzeige, file_name=file_name,  directory=directory)
-# Files löschen mit bestätigung
 
-# file freigeben
-
-
-
-# Verzeichniss wechseln ( Link im namen / Directory) done 50%
-#Vrzeichniss oben Anzeigen
-
-#var.startwith("start path")
-#var.split(/) für entfernen des letzten ordners für zurück
-# env Variable für path
-
-#Upload auf extra Seite
-#Umstellen auf Linux ( Pfade ändern etc) done
-
-# Darkmode
-# Dateien löschen button
-# Dateien löschen mit checkbox
-# Ordner löschen
-#home button farbe ändern
