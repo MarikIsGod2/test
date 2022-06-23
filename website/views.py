@@ -8,9 +8,14 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/')
-def test():
+def  redirect_slash():
     return redirect(url_for('views.home', anzeige_directory="####"))
-
+@views.route('/home')
+def redirect_home():
+    return redirect(url_for('views.home', anzeige_directory="####"))
+@views.route('/logged_in')
+def redirect_logged_in():
+    return redirect(url_for('views.logged_in', anzeige_directory="####"))
 
 @views.route('/home/<path:anzeige_directory>', methods=['POST', 'GET'])
 def home(anzeige_directory):
