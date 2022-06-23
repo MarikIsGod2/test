@@ -33,8 +33,8 @@
                     {% for row in data %}
                         <tr>
                                 {% if row["type"] == "dir" %}
-                            <td><a href="/home/{{directory_anzeige}}/{{row['name']}}/"> Directory  </a></td>
-                            <td><a href="/home/{{directory_anzeige}}/{{row['name']}}/"> {{ row['name'] }}  </a></td>
+                            <td><a href="/logged_in/{{directory_anzeige}}/{{row['name']}}/"> Directory  </a></td>
+                            <td><a href="/logged_in/{{directory_anzeige}}/{{row['name']}}/"> {{ row['name'] }}  </a></td>
                             <td> {{ row["modification_date"]}}</td>
                             <td> {{ row["file_size"] }}</td>
                             <td><button type="submit" formaction="/confirm_delete" class="btn btn-link" name="del_dir" value="{{ row['name'] }}"> Delete Directory </button></td>
