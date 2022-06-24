@@ -8,13 +8,14 @@
 {% block title %} File editor {% endblock %}
 {% block content %}
 <br>
+<!-- Form for uploading files.  -->
 <form method=POST enctype=multipart/form-data>
     <input type=file name=file>
     <input type=submit value=Upload>
     <input type="hidden" value="{{ directory }}" name="directory">
 
 </form>
-
+<!-- table for data sent my views.py -->
 <form action="" method="POST">
     <a href="/logged_in/{{old_directory}}/"> Go back one Directory </a> Directory = {{ displayed_directory }}
     <input type="hidden" value="{{ directory }}" name="directory">
@@ -33,21 +34,26 @@
         {% for row in data %}
         <tr>
             {% if row["type"] == "dir" %}
+            <!-- this outputs if the row is a directory. The URL to navigate into the directory gets build here. -->
             <td><a href="/logged_in/{{displayed_directory}}{{row['name']}}/"> Directory </a></td>
             <td><a href="/logged_in/{{displayed_directory}}{{row['name']}}/"> {{ row['name'] }} </a></td>
             <td> {{ row["modification_date"]}}</td>
             <td> {{ row["file_size"] }}</td>
             <td>
+                <!-- Button to delete the directory. -->
                 <button type="submit" formaction="/confirm_delete" class="btn btn-link" name="del_dir"
                         value="{{ row['name'] }}"> Delete Directory
                 </button>
             </td>
             {% else %}
+            <!-- This gets executed if the row is a file. The download URL gets build here.  -->
+
             <td><a href="/download{{displayed_directory}}{{row['name']}}"> File </a></td>
             <td><a href="/download{{displayed_directory}}{{row['name']}}">{{ row["name"] }} </a></td>
             <td> {{ row["modification_date"]}}</td>
             <td> {{ row["file_size"] }}</td>
             <td>
+                <!--Button to delete the file.  -->
                 <button type="submit" formaction="/confirm_delete" class="btn btn-link" name="del_file"
                         value="{{row['name']}}"> Delete File
                 </button>

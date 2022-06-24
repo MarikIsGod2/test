@@ -25,9 +25,11 @@
                     {% for row in data %}
                         <tr>
                                 {% if row["type"] == "dir" %}
+                            <!-- this outputs if the row is a directory. The URL to navigate into the directory gets build here. -->
                             <td><a href="/home/{{displayed_directory}}{{row['name']}}/"> Directory  </a></td>
                             <td><a href="/home/{{displayed_directory}}{{row['name']}}/"> {{ row['name'] }}  </a></td>
                                 {% else %}
+                            <!-- This gets executed if the row is a file. The download URL gets build here.  -->
                             <td><a href="/download{{displayed_directory}}{{row['name']}}"> File </a></td>
                             <td><a href="/download{{displayed_directory}}{{row['name']}}">{{ row["name"] }} </a></td>
                                 {% endif %}
