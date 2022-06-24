@@ -52,7 +52,7 @@ def home(displayed_directory):
         old_directory = old_directory + "/" + tmp_directory[i]
     old_directory = old_directory + "/"
     if old_directory == "/":
-        old_directory = "%%%%"
+        old_directory = "%25%25%25%25"
     return render_template("home.html", data=data, directory=directory, displayed_directory=displayed_directory,
                            old_directory=old_directory)
 
@@ -93,7 +93,7 @@ def logged_in(displayed_directory):
         i = i + 1
         old_directory = old_directory + "/" + tmp_directory[i]
     if old_directory == "":
-        old_directory = "%%%%"
+        old_directory = "%25%25%25%25"
     return render_template("logged_in.html", data=data, directory=directory, directory_anzeige=directory_anzeige,
                            old_directory=old_directory)
 
