@@ -9,7 +9,7 @@
 {% block content %}
 <br>
         <form action="" method="POST">
-            <a href="/home/{{old_directory}}"> Go back one Directory  </a> Directory = {{ directory_anzeige }}
+            <a href="/home/{{old_directory}}"> Go back one Directory  </a> Directory = {{ displayed_directory }}
            <br>
             <input type="hidden" value="{{ directory }}" name="directory">
             <table id="datatable" class="display">
@@ -25,11 +25,11 @@
                     {% for row in data %}
                         <tr>
                                 {% if row["type"] == "dir" %}
-                            <td><a href="/home/{{directory_anzeige}}{{row['name']}}/"> Directory  </a></td>
-                            <td><a href="/home/{{directory_anzeige}}{{row['name']}}/"> {{ row['name'] }}  </a></td>
+                            <td><a href="/home/{{displayed_directory}}{{row['name']}}/"> Directory  </a></td>
+                            <td><a href="/home/{{displayed_directory}}{{row['name']}}/"> {{ row['name'] }}  </a></td>
                                 {% else %}
-                            <td><a href="/download{{directory_anzeige}}{{row['name']}}"> File </a></td>
-                            <td><a href="/download{{directory_anzeige}}{{row['name']}}">{{ row["name"] }} </a></td>
+                            <td><a href="/download{{displayed_directory}}{{row['name']}}"> File </a></td>
+                            <td><a href="/download{{displayed_directory}}{{row['name']}}">{{ row["name"] }} </a></td>
                                 {% endif %}
                             <td> {{ row["modification_date"]}}</td>
                             <td> {{ row["file_size"] }}</td>
