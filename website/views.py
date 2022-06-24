@@ -8,7 +8,7 @@ from .list_dir import get_file_data
 
 views = Blueprint('views', __name__)
 
-
+#   Redirects to pages /logged_in/<path> & /home/<path>
 @views.route('/')
 def redirect_slash():
     return redirect(url_for('views.home', displayed_directory="%%%%"))
@@ -31,19 +31,21 @@ def redirect_logged_in_slash():
 
 @views.route('/home/<path:displayed_directory>', methods=['POST', 'GET'])
 def home(displayed_directory):
+
+    #   setting Directory to Link in URL
     if displayed_directory != '%%%%':
         directory = current_app.config['DOWNLOAD_DIRECTORY'] + displayed_directory
-    else:
-        directory = current_app.config['DOWNLOAD_DIRECTORY']
+        # Checking if the path exists or not
         if not os.path.exists(directory):
             flash("Unknown path. Changing to default download path.", category="error")
             directory = current_app.config['DOWNLOAD_DIRECTORY']
-
-    if request.method == 'POST':
-        if request.form.get('back'):
-            directory = current_app.config['DOWNLOAD_DIRECTORY'] + displayed_directory
-    print(directory)
+    else:
+        directory = current_app.config['DOWNLOAD_DIRECTORY']
+    #    executing get-file_data() from list_dir.py it returns the data for the table & the directory to display on top
     data, displayed_directory = get_file_data(directory)
+
+    #    creates variable from the directory before.
+    #    Information gets submitted to the HTML page for the "go back" button.
     tmp_directory = displayed_directory.split("/")
     i = 0
     old_directory = ""
@@ -51,26 +53,27 @@ def home(displayed_directory):
         i = i + 1
         old_directory = old_directory + "/" + tmp_directory[i]
     old_directory = old_directory + "/"
+    #   if the directory is the default directory change link to "%25%25%25%25 "
     if old_directory == "/":
         old_directory = "%25%25%25%25"
+
+    #   rendering the HTML file & submitting information to it.
     return render_template("home.html", data=data, directory=directory, displayed_directory=displayed_directory,
                            old_directory=old_directory)
 
 
 @views.route('/logged_in/<path:displayed_directory>', methods=['POST', 'GET'])
 def logged_in(displayed_directory):
-    # Überprüfung ob es der erste Aufruf ist (Ob ein POST übergeben wurde)
+    # setting Directory to Link in URL
     if displayed_directory != '%%%%' and displayed_directory != '%%%%/':
         directory = current_app.config['DOWNLOAD_DIRECTORY'] + displayed_directory
-    else:
-        directory = current_app.config['DOWNLOAD_DIRECTORY']
+        # Checking if the path exists or not
         if not os.path.exists(directory):
             flash("Unknown path. Changing to default download path.", category="error")
             directory = current_app.config['DOWNLOAD_DIRECTORY']
+    else:
+        directory = current_app.config['DOWNLOAD_DIRECTORY']
 
-    if request.method == 'POST':
-        if request.form.get('back'):
-            directory = current_app.config['DOWNLOAD_DIRECTORY'] + displayed_directory
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -84,52 +87,70 @@ def logged_in(displayed_directory):
                 return redirect(request.url)
             if file:
                 filename = secure_filename(file.filename)
-                file.save(directory + filename)
-    data, directory_anzeige = get_file_data(directory)
-    tmp_directory = directory_anzeige.split("/")
+                if filename != "%25%25%25%25" and filename != "%25%25%25%25/":
+                    file.save(directory + filename)
+                else:
+                    flash("Download canceled filename not allowed.", category="error")
+
+    #    executing get-file_data() from list_dir.py it returns the data for the table & the directory to display on top
+    data, displayed_directory = get_file_data(directory)
+
+    #    creates variable from the directory before.
+    tmp_directory = displayed_directory.split("/")
     i = 0
     old_directory = ""
     while i < len(tmp_directory) - 3:
         i = i + 1
         old_directory = old_directory + "/" + tmp_directory[i]
+
+        #   if the directory is the default directory change link to "%25%25%25%25 "
     if old_directory == "":
         old_directory = "%25%25%25%25"
-    return render_template("logged_in.html", data=data, directory=directory, directory_anzeige=directory_anzeige,
+
+    #   rendering the HTML file & submitting information to it.
+    return render_template("logged_in.html", data=data, directory=directory, displayed_directory=displayed_directory,
                            old_directory=old_directory)
 
 
 @views.route('/confirm_delete', methods=['POST', 'GET'])
 def confirm_delete():
-    print(request.form.get('displayed_directory'))
+    # setting variables for the file to delete.
     directory = request.form.get('directory')
     if request.method == 'POST':
         if request.form.get('del_file'):
-            directory_anzeige = request.form.get('displayed_directory') + request.form.get('del_file')
+            # del_file beeing set means that the user is trying to delete a file.
+            displayed_directory = request.form.get('displayed_directory') + request.form.get('del_file')
             file_name = request.form.get('del_file')
         elif request.form.get('del_dir'):
-            directory_anzeige = request.form.get('displayed_directory') + request.form.get('del_dir')
+            # del_dir beeing set means that the user is trying to delete a directory.
+            displayed_directory = request.form.get('displayed_directory') + request.form.get('del_dir')
             file_name = request.form.get('del_dir')
         elif request.form.get('delete_confirmed') == "confirmed":
-            print("Directory", directory, "old_directory_anzeige", request.form.get('displayed_directory'))
+            # This gets executed after pressing a button on confirm_delete.html
             if os.path.isfile(directory):
+                # Deleting the given file
                 os.remove(directory)
                 flash("File successfully deleted. " + directory, category="sucess")
-
             else:
+                # Deleting the submitted directory.
                 rmtree(directory)
                 flash("Directory successfully deleted. " + directory, category="sucess")
-            if request.form.get('old_directory_anzeige') == "/":
-                old_directory_anzeige = "%%%%"
+            if request.form.get('old_displayed_directory') == "/":
+                old_displayed_directory = "%%%%"
             else:
-                old_directory_anzeige = request.form.get("old_directory_anzeige")
-            print(url_for('views.logged_in', displayed_directory=old_directory_anzeige), "AUSGABE URL ")
-            return redirect(url_for('views.logged_in', displayed_directory=old_directory_anzeige))
+                old_displayed_directory = request.form.get("old_displayed_directory")
+            # Sending the user back to the logged_in page.
+            # It sends them to the directory they where in before they deleted the file.
+            print(url_for('views.logged_in', displayed_directory=old_displayed_directory), "AUSGABE URL ")
+            return redirect(url_for('views.logged_in', displayed_directory=old_displayed_directory))
 
         else:
+            # gets executed when pressing the "No" button n confirm_delete.html
             flash("Deletion canceled.", category="error")
-            return redirect(url_for('views.logged_in', displayed_directory=request.form.get('old_directory_anzeige')))
+            return redirect(url_for('views.logged_in', displayed_directory=request.form.get('old_displayed_directory')))
     else:
+        # This should never happen. The confirm_delete page can only be accessed with a POST input.
         flash("Error: (No POST request received.)", category="error")
         return redirect(url_for('views.redirect_home'))
-    return render_template("confirm_delete.html", directory_anzeige=directory_anzeige, file_name=file_name,
-                           directory=directory, old_directory_anzeige=request.form.get('displayed_directory'))
+    return render_template("confirm_delete.html", displayed_directory=displayed_directory, file_name=file_name,
+                           directory=directory, old_displayed_directory=request.form.get('displayed_directory'))

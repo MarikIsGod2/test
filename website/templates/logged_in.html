@@ -16,9 +16,9 @@
 </form>
 
 <form action="" method="POST">
-    <a href="/logged_in/{{old_directory}}/"> Go back one Directory </a> Directory = {{ directory_anzeige }}
+    <a href="/logged_in/{{old_directory}}/"> Go back one Directory </a> Directory = {{ displayed_directory }}
     <input type="hidden" value="{{ directory }}" name="directory">
-    <input type="hidden" value="{{ directory_anzeige }}" name="directory_anzeige">
+    <input type="hidden" value="{{ displayed_directory }}" name="displayed_directory">
     <table id="datatable" class="display">
         <thead>
         <tr>
@@ -33,8 +33,8 @@
         {% for row in data %}
         <tr>
             {% if row["type"] == "dir" %}
-            <td><a href="/logged_in/{{directory_anzeige}}{{row['name']}}/"> Directory </a></td>
-            <td><a href="/logged_in/{{directory_anzeige}}{{row['name']}}/"> {{ row['name'] }} </a></td>
+            <td><a href="/logged_in/{{displayed_directory}}{{row['name']}}/"> Directory </a></td>
+            <td><a href="/logged_in/{{displayed_directory}}{{row['name']}}/"> {{ row['name'] }} </a></td>
             <td> {{ row["modification_date"]}}</td>
             <td> {{ row["file_size"] }}</td>
             <td>
@@ -43,8 +43,8 @@
                 </button>
             </td>
             {% else %}
-            <td><a href="/download{{directory_anzeige}}{{row['name']}}"> File </a></td>
-            <td><a href="/download{{directory_anzeige}}{{row['name']}}">{{ row["name"] }} </a></td>
+            <td><a href="/download{{displayed_directory}}{{row['name']}}"> File </a></td>
+            <td><a href="/download{{displayed_directory}}{{row['name']}}">{{ row["name"] }} </a></td>
             <td> {{ row["modification_date"]}}</td>
             <td> {{ row["file_size"] }}</td>
             <td>
