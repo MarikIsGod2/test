@@ -13,6 +13,8 @@ def create_app():
     app.config['DOWNLOAD_DIRECTORY'] = os.environ.get('FLASK_DOWNLOAD_DIRECTORY')
     if app.config['DOWNLOAD_DIRECTORY'] == "" or app.config['DOWNLOAD_DIRECTORY'] is None:
         app.config['DOWNLOAD_DIRECTORY'] = '/'
+    if not app.config['DOWNLOAD_DIRECTORY'].endswith('/'):
+        app.config['DOWNLOAD_DIRECTORY'] = app.config['DOWNLOAD_DIRECTORY'] + '/'
     app.config['LEN_DOWNLOAD_DIRECTORY'] = app.config['DOWNLOAD_DIRECTORY'].count('/')
     print("Current download directory is ", app.config['DOWNLOAD_DIRECTORY'])
 # 7 + 1
