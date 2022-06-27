@@ -83,12 +83,13 @@ def logged_in(displayed_directory):
             # If the user does not select a file, the browser submits an
             # empty file without a filename.
             if file.filename == '':
-                flash('No selected file')
+                flash('No selected file', category="error")
                 return redirect(request.url)
             if file:
                 filename = secure_filename(file.filename)
                 if filename != "%25%25%25%25" and filename != "%25%25%25%25/":
                     file.save(directory + filename)
+                    flash("Upload sucessfull", category="success")
                 else:
                     flash("Download canceled filename not allowed.", category="error")
 
