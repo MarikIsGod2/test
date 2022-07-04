@@ -135,14 +135,13 @@ def confirm_delete():
             else:
                 # Deleting the submitted directory.
                 rmtree(directory)
-                flash("Directory successfully deleted. " + directory, category="sucess")
+                flash("Directory successfully deleted. ", category="sucess")
             if request.form.get('old_displayed_directory') == "/":
                 old_displayed_directory = "%%%%"
             else:
                 old_displayed_directory = request.form.get("old_displayed_directory")
             # Sending the user back to the logged_in page.
             # It sends them to the directory they where in before they deleted the file.
-            print(url_for('views.logged_in', displayed_directory=old_displayed_directory), "AUSGABE URL ")
             return redirect(url_for('views.logged_in', displayed_directory=old_displayed_directory))
 
         else:

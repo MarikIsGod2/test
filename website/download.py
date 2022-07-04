@@ -12,3 +12,12 @@ def download_file(path):
     else:
         flash("Download Link not found. ", category="error")
         return redirect(url_for("views.home", displayed_directory="%%%%"))
+
+
+@download.route('/download/')
+def redirect_download():
+    return redirect(url_for("views.home", displayed_directory="%%%%"))
+
+@download.route('/download')
+def redirect_download_():
+    return redirect(url_for("views.home", displayed_directory="%%%%"))
