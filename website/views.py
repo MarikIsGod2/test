@@ -155,3 +155,7 @@ def confirm_delete():
         return redirect(url_for('views.redirect_home'))
     return render_template("confirm_delete.html", displayed_directory=displayed_directory, file_name=file_name,
                            directory=directory, old_displayed_directory=request.form.get('displayed_directory'))
+
+
+# Unbekannter Pfad beim download behandeln
+# delete url ändern bei sucess
