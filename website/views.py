@@ -131,7 +131,7 @@ def confirm_delete():
             if os.path.isfile(directory):
                 # Deleting the given file
                 os.remove(directory)
-                flash("File successfully deleted. " + directory, category="sucess")
+                flash("File successfully deleted. ", category="sucess")
             else:
                 # Deleting the submitted directory.
                 rmtree(directory)
